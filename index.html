@@ -22,10 +22,21 @@
 
             const response = await getChatGPTResponse(apiKey, inputText);
 
-            document.getElementById("output").innerText = response.choices[0].text.trim();
+            document.getElementById("output").innerText = response.choices[0].message.content.trim();
         }
 
         async function getChatGPTResponse(apiKey, input) {
+            const messages = [
+                {
+                    role: "system",
+                    content: "You are a helpful assistant."
+                },
+                {
+                    role: "user",
+                    content: input
+                }
+            ];
+
             const response = await fetch('https://api.openai.com/v1/engines/davinci/completions', {
                 method: 'POST',
                 headers: {
@@ -33,7 +44,7 @@
                     'Authorization': `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    prompt: input,
+                    messages: messages,
                     max_tokens: 50
                 })
             });
