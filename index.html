@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Personas Demo v2</title>
+    <title>AI Personas Demo v3</title>
 </head>
 <body>
     <input type="text" id="apiKeyInput" placeholder="Enter your API key">
@@ -44,10 +44,7 @@
                     'Authorization': `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    prompt: {
-                        'role': 'system',
-                        'content': `This is a ${persona} persona: ${input}`
-                    },
+                    prompt: `This is a ${persona} persona: ${input}`,
                     max_tokens: 50
                 })
             });
