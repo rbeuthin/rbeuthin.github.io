@@ -5,26 +5,40 @@
 </head>
 <body>
     <input type="text" id="textInput" placeholder="Enter text here">
-    <button onclick="speakText()">Speak</button>
+    <button onclick="generateResponses()">Speak</button>
     <div id="angryOutput"></div>
     <div id="professorOutput"></div>
     <div id="grade2Output"></div>
 
     <script>
-        function speakText() {
-            var inputText = document.getElementById("textInput").value;
+        const apiKey = 'YOUR_API_KEY'; // Replace 'YOUR_API_KEY' with your actual ChatGPT API key
 
-            // Code to convert inputText to different personas' speech
-            // Use text-to-speech APIs or libraries to generate the spoken output
-            // For example, for simplicity, you can simulate different personas using console logs:
-            console.log("Angry Persona: " + inputText.toUpperCase());
-            console.log("Snooty College Professor: " + inputText.replace(/[aeiou]/ig, 'i'));
-            console.log("Grade 2 in a Bad Mood: " + inputText.toLowerCase() + " I don't want to!");
+        async function generateResponses() {
+            const inputText = document.getElementById("textInput").value;
+            
+            const angryResponse = await getChatGPTResponse(inputText, "angry");
+            const professorResponse = await getChatGPTResponse(inputText, "professor");
+            const grade2Response = await getChatGPTResponse(inputText, "grade2");
 
-            // Display the output in respective div elements
-            document.getElementById("angryOutput").innerText = "Angry Persona: " + inputText.toUpperCase();
-            document.getElementById("professorOutput").innerText = "Snooty College Professor: " + inputText.replace(/[aeiou]/ig, 'i');
-            document.getElementById("grade2Output").innerText = "Grade 2 in a Bad Mood: " + inputText.toLowerCase() + " I don't want to!";
+            document.getElementById("angryOutput").innerText = "Angry Persona: " + angryResponse.choices[0].text.trim();
+            document.getElementById("professorOutput").innerText = "Snooty College Professor: " + professorResponse.choices[0].text.trim();
+            document.getElementById("grade2Output").innerText = "Grade 2 in a Bad Mood: " + grade2Response.choices[0].text.trim();
+        }
+
+        async function getChatGPTResponse(input, persona) {
+            const response = await fetch('https://api.openai.com/v1/engines/davinci/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    prompt: `This is a ${persona} persona: ${input}`,
+                    max_tokens: 50
+                })
+            });
+
+            return response.json();
         }
     </script>
 </body>
