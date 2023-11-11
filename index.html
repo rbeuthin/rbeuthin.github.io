@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Personas Demo v4</title>
+    <title>OpenAI GPT-3 Demo</title>
 </head>
 <body>
     <input type="text" id="apiKeyInput" placeholder="Enter your API key">
     <br>
-    <input type="text" id="textInput" placeholder="Describe the persona and enter text here">
-    <button onclick="generateResponse()">Speak</button>
+    <input type="text" id="textInput" placeholder="Enter text here">
+    <button onclick="generateResponse()">Get Response</button>
     <div id="output"></div>
 
     <script>
         async function generateResponse() {
-            try {
-                const apiKey = document.getElementById("apiKeyInput").value;
-                const inputText = document.getElementById("textInput").value;
+            const apiKey = document.getElementById("apiKeyInput").value;
+            const inputText = document.getElementById("textInput").value;
 
-                if (!apiKey || !inputText) {
-                    alert("Please enter both API key and text to proceed.");
-                    return;
-                }
-
-                const response = await getChatGPTResponse(apiKey, inputText);
-
-                document.getElementById("output").innerText = response.choices[0].text.trim();
-            } catch (error) {
-                alert("An error occurred. Please check the console for more details.");
-                console.error(error);
+            if (!apiKey || !inputText) {
+                alert("Please enter both API key and text to proceed.");
+                return;
             }
+
+            const response = await getChatGPTResponse(apiKey, inputText);
+
+            document.getElementById("output").innerText = response.choices[0].text.trim();
         }
 
         async function getChatGPTResponse(apiKey, input) {
