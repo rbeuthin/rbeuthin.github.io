@@ -4,6 +4,8 @@
     <title>AI Personas Demo</title>
 </head>
 <body>
+    <input type="text" id="apiKeyInput" placeholder="Enter your API key">
+    <br>
     <input type="text" id="textInput" placeholder="Enter text here">
     <button onclick="generateResponses()">Speak</button>
     <div id="angryOutput"></div>
@@ -11,21 +13,30 @@
     <div id="grade2Output"></div>
 
     <script>
-        const apiKey = 'YOUR_API_KEY'; // Replace 'YOUR_API_KEY' with your actual ChatGPT API key
-
         async function generateResponses() {
-            const inputText = document.getElementById("textInput").value;
-            
-            const angryResponse = await getChatGPTResponse(inputText, "angry");
-            const professorResponse = await getChatGPTResponse(inputText, "professor");
-            const grade2Response = await getChatGPTResponse(inputText, "grade2");
+            try {
+                const apiKey = document.getElementById("apiKeyInput").value;
+                const inputText = document.getElementById("textInput").value;
 
-            document.getElementById("angryOutput").innerText = "Angry Persona: " + angryResponse.choices[0].text.trim();
-            document.getElementById("professorOutput").innerText = "Snooty College Professor: " + professorResponse.choices[0].text.trim();
-            document.getElementById("grade2Output").innerText = "Grade 2 in a Bad Mood: " + grade2Response.choices[0].text.trim();
+                if (!apiKey || !inputText) {
+                    alert("Please enter both API key and text to proceed.");
+                    return;
+                }
+                
+                const angryResponse = await getChatGPTResponse(apiKey, inputText, "angry");
+                const professorResponse = await getChatGPTResponse(apiKey, inputText, "professor");
+                const grade2Response = await getChatGPTResponse(apiKey, inputText, "grade2");
+
+                document.getElementById("angryOutput").innerText = "Angry Persona: " + angryResponse.choices[0].text.trim();
+                document.getElementById("professorOutput").innerText = "Snooty College Professor: " + professorResponse.choices[0].text.trim();
+                document.getElementById("grade2Output").innerText = "Grade 2 in a Bad Mood: " + grade2Response.choices[0].text.trim();
+            } catch (error) {
+                alert("An error occurred. Please check the console for more details.");
+                console.error(error);
+            }
         }
 
-        async function getChatGPTResponse(input, persona) {
+        async function getChatGPTResponse(apiKey, input, persona) {
             const response = await fetch('https://api.openai.com/v1/engines/davinci/completions', {
                 method: 'POST',
                 headers: {
@@ -37,6 +48,10 @@
                     max_tokens: 50
                 })
             });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
 
             return response.json();
         }
