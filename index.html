@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Personas Demo v3</title>
+    <title>AI Personas Demo v4</title>
 </head>
 <body>
     <input type="text" id="apiKeyInput" placeholder="Enter your API key">
     <br>
-    <input type="text" id="textInput" placeholder="Enter text here">
-    <button onclick="generateResponses()">Speak</button>
-    <div id="angryOutput"></div>
-    <div id="professorOutput"></div>
-    <div id="grade2Output"></div>
+    <input type="text" id="textInput" placeholder="Describe the persona and enter text here">
+    <button onclick="generateResponse()">Speak</button>
+    <div id="output"></div>
 
     <script>
-        async function generateResponses() {
+        async function generateResponse() {
             try {
                 const apiKey = document.getElementById("apiKeyInput").value;
                 const inputText = document.getElementById("textInput").value;
@@ -22,21 +20,17 @@
                     alert("Please enter both API key and text to proceed.");
                     return;
                 }
-                
-                const angryResponse = await getChatGPTResponse(apiKey, inputText, "angry");
-                const professorResponse = await getChatGPTResponse(apiKey, inputText, "professor");
-                const grade2Response = await getChatGPTResponse(apiKey, inputText, "grade 2");
 
-                document.getElementById("angryOutput").innerText = "Angry Persona: " + angryResponse.choices[0].text.trim();
-                document.getElementById("professorOutput").innerText = "Snooty College Professor: " + professorResponse.choices[0].text.trim();
-                document.getElementById("grade2Output").innerText = "Grade 2 in a Bad Mood: " + grade2Response.choices[0].text.trim();
+                const response = await getChatGPTResponse(apiKey, inputText);
+
+                document.getElementById("output").innerText = response.choices[0].text.trim();
             } catch (error) {
                 alert("An error occurred. Please check the console for more details.");
                 console.error(error);
             }
         }
 
-        async function getChatGPTResponse(apiKey, input, persona) {
+        async function getChatGPTResponse(apiKey, input) {
             const response = await fetch('https://api.openai.com/v1/engines/davinci/completions', {
                 method: 'POST',
                 headers: {
@@ -44,7 +38,7 @@
                     'Authorization': `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    prompt: `This is a ${persona} persona: ${input}`,
+                    prompt: input,
                     max_tokens: 50
                 })
             });
