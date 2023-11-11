@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Personas Demo</title>
+</head>
+<body>
+    <input type="text" id="textInput" placeholder="Enter text here">
+    <button onclick="speakText()">Speak</button>
+    <div id="angryOutput"></div>
+    <div id="professorOutput"></div>
+    <div id="grade2Output"></div>
+
+    <script>
+        function speakText() {
+            var inputText = document.getElementById("textInput").value;
+
+            // Code to convert inputText to different personas' speech
+            // Use text-to-speech APIs or libraries to generate the spoken output
+            // For example, for simplicity, you can simulate different personas using console logs:
+            console.log("Angry Persona: " + inputText.toUpperCase());
+            console.log("Snooty College Professor: " + inputText.replace(/[aeiou]/ig, 'i'));
+            console.log("Grade 2 in a Bad Mood: " + inputText.toLowerCase() + " I don't want to!");
+
+            // Display the output in respective div elements
+            document.getElementById("angryOutput").innerText = "Angry Persona: " + inputText.toUpperCase();
+            document.getElementById("professorOutput").innerText = "Snooty College Professor: " + inputText.replace(/[aeiou]/ig, 'i');
+            document.getElementById("grade2Output").innerText = "Grade 2 in a Bad Mood: " + inputText.toLowerCase() + " I don't want to!";
+        }
+    </script>
+</body>
+</html>
