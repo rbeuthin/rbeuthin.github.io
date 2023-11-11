@@ -23,9 +23,9 @@
                     return;
                 }
                 
-                const angryResponse = await getChatGPTResponse(apiKey, inputText, "angry");
-                const professorResponse = await getChatGPTResponse(apiKey, inputText, "professor");
-                const grade2Response = await getChatGPTResponse(apiKey, inputText, "grade2");
+                const angryResponse = await getChatGPTResponse(apiKey, inputText, "angry persona");
+                const professorResponse = await getChatGPTResponse(apiKey, inputText, "professor persona");
+                const grade2Response = await getChatGPTResponse(apiKey, inputText, "grade2 in a bad mood persona");
 
                 document.getElementById("angryOutput").innerText = "Angry Persona: " + angryResponse.choices[0].text.trim();
                 document.getElementById("professorOutput").innerText = "Snooty College Professor: " + professorResponse.choices[0].text.trim();
