@@ -43,10 +43,10 @@
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${apiKey}`
                 },
-                body: JSON.stringify({
+                body: {
                     messages: messages,
                     max_tokens: 50
-                })
+                }
             });
 
             if (!response.ok) {
