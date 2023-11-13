@@ -1,62 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>OpenAI GPT-3 Demo</title>
+    <title>ChatGPT API Example</title>
 </head>
 <body>
-    <input type="text" id="apiKeyInput" placeholder="Enter your API key">
-    <br>
-    <input type="text" id="textInput" placeholder="Enter text here">
-    <button onclick="generateResponse()">Get Response</button>
-    <div id="output"></div>
+    <h1>ChatGPT API Example</h1>
+    <input id="api-key" type="password" placeholder="Enter your API key here" />
+    <input id="user-input" type="text" placeholder="Type your message here" />
+    <button onclick="callChatGPT()">Send</button>
+    <div id="response"></div>
 
     <script>
-        async function generateResponse() {
-            const apiKey = document.getElementById("apiKeyInput").value;
-            const inputText = document.getElementById("textInput").value;
+        async function callChatGPT() {
+            const apiKey = document.getElementById('api-key').value;
+            const userInput = document.getElementById('user-input').value;
+            const responseDiv = document.getElementById('response');
 
-            if (!apiKey || !inputText) {
-                alert("Please enter both API key and text to proceed.");
-                return;
-            }
-
-            const response = await getChatGPTResponse(apiKey, inputText);
-
-            document.getElementById("output").innerText = response.choices[0].message.content.trim();
-        }
-
-        async function getChatGPTResponse(apiKey, input) {
-            console.log("In getChatGPTResponse")
-            console.log(input)
-            const messages = [
-                {
-                    role: "system",
-                    content: "You are a helpful assistant."
-                },
-                {
-                    role: "user",
-                    content: input
-                }
-            ];
-
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
+                    'Authorization': 'Bearer ' + apiKey
                 },
-                body: {
-                    model: "gpt-3.5-turbo",
-                    messages: messages,
-                    max_tokens: 50
-                }
+                body: JSON.stringify({
+                    'prompt': userInput,
+                    'max_tokens': 60
+                })
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response}`);
-            }
-
-            return response.json();
+            const data = await response.json();
+            responseDiv.innerText = data.choices[0].text;
         }
     </script>
 </body>
