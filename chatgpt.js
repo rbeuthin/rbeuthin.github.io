@@ -1,14 +1,15 @@
 window.onload = function () {
-    const CHATGPT_API_KEY = "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";
     const CHATGPT_API_URL = "https://api.openai.com/v1/chat/completions";
 
     var sendBtnElem = document.getElementById("sendBtn");
     var chatMessageElem = document.getElementById("chatMessage");
+    var apiKeyElem = document.getElementbyId("apiKey")
     var chatOutputElem = document.getElementById("chatOutput");
     var loadingContainerElem = document.getElementById("loadingContainer");
 
     sendBtnElem.addEventListener("click", function () {
         var message = chatMessageElem.value;
+        var apiKey = apiKeyElem.value;
         if (message != null && message != "") {
             generateUserChatBubble(message);
             loadingContainerElem.classList.remove("d-none");
@@ -69,7 +70,7 @@ window.onload = function () {
         xhttp.open("POST", CHATGPT_API_URL, true);
         // Some simple headers are required for this to work properly with their API.
         xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.setRequestHeader("Authorization", "Bearer " + CHATGPT_API_KEY);
+        xhttp.setRequestHeader("Authorization", "Bearer " + apiKey);
         xhttp.send(JSON.stringify(messageBody));
     }
 };
