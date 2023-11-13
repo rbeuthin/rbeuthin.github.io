@@ -3,7 +3,7 @@ window.onload = function () {
 
     var sendBtnElem = document.getElementById("sendBtn");
     var chatMessageElem = document.getElementById("chatMessage");
-    var apiKeyElem = document.getElementbyId("apiKey")
+    var apiKeyElem = document.getElementById("apiKey")
     var chatOutputElem = document.getElementById("chatOutput");
     var loadingContainerElem = document.getElementById("loadingContainer");
 
