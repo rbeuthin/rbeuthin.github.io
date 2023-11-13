@@ -61,6 +61,7 @@ window.onload = function () {
         xhttp.onload = function () {
             // Parse the response body into JSON object.
             var responseBodyObj = JSON.parse(this.responseText);
+            console.log(this.responseText)
             // I'm cheating a little as I know which property I need. I recommend making this more robust.
             // If you want to see the response object itself then log it to the console and learn!
             onSuccessCallback(responseBodyObj.choices[0].message.content);
