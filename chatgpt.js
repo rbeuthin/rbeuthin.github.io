@@ -10,6 +10,7 @@ window.onload = function () {
     sendBtnElem.addEventListener("click", function () {
         var message = chatMessageElem.value;
         var apiKey = apiKeyElem.value;
+        console.log(apiKey)
         if (message != null && message != "") {
             generateUserChatBubble(message);
             loadingContainerElem.classList.remove("d-none");
